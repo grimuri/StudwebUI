@@ -1,0 +1,228 @@
+<form [formGroup]="registerForm" (submit)="validateForm()">
+  <div class="grid gap-6 mb-6 md:grid-cols-2">
+    <div>
+      @if (errors.has("firstName")) {
+      <label
+        for="error_first_name"
+        class="block mb-2 text-sm font-medium text-red-700 dark:text-red-500"
+        >First name</label
+      >
+      <input
+        type="text"
+        id="error_first_name"
+        formControlName="firstName"
+        class="bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
+        placeholder="Not valid data"
+      />
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+        <span class="font-medium"> First name </span>
+        {{ errors.get("firstName") }}
+      </p>
+      } @else {
+      <label
+        for="first_name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >First name</label
+      >
+      <input
+        type="text"
+        id="first_name"
+        formControlName="firstName"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="John"
+        required
+      />
+      }
+    </div>
+    <div>
+      @if (errors.has('lastName')) {
+      <label
+        for="error_last_name"
+        class="block mb-2 text-sm font-medium text-red-700 dark:text-red-500"
+        >Last name</label
+      >
+      <input
+        type="text"
+        id="error_last_name"
+        formControlName="lastName"
+        class="bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
+        placeholder="Not valid data"
+      />
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+        <span class="font-medium"> Last name </span>
+        {{ errors.get("lastName") }}
+      </p>
+      } @else {
+      <label
+        for="last_name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Last name</label
+      >
+      <input
+        type="text"
+        id="last_name"
+        formControlName="lastName"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Doe"
+        required
+      />
+      }
+    </div>
+  </div>
+  <div class="mb-6">
+    @if (errors.has('email')) {
+    <label
+      for="error_email"
+      class="block mb-2 text-sm font-medium text-red-700 dark:text-red-500"
+      >Email address</label
+    >
+    <input
+      type="text"
+      id="error_email"
+      formControlName="email"
+      class="bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
+      placeholder="Not valid data"
+    />
+    <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+      <span class="font-medium"> Email address </span>
+      {{ errors.get("email") }}
+    </p>
+    } @else {
+    <label
+      for="email"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >Email address</label
+    >
+    <input
+      type="email"
+      id="email"
+      formControlName="email"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="john.doe@company.com"
+      required
+    />
+    }
+  </div>
+  <div class="mb-6">
+    @if (errors.has('password')) {
+    <label
+      for="error_password"
+      class="block mb-2 text-sm font-medium text-red-700 dark:text-red-500"
+      >Password</label
+    >
+    <input
+      type="password"
+      id="error_password"
+      formControlName="password"
+      class="bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
+      placeholder="Not valid data"
+    />
+    <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+      <span class="font-medium"> Password </span>
+      {{ errors.get("password") }}
+    </p>
+    } @else {
+    <label
+      for="password"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >Password</label
+    >
+    <input
+      type="password"
+      id="password"
+      formControlName="password"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="•••••••••"
+      required
+    />
+    }
+  </div>
+  <div class="mb-6">
+    @if (errors.has('password')) {
+    <label
+      for="error_confirm_password"
+      class="block mb-2 text-sm font-medium text-red-700 dark:text-red-500"
+      >Confirm password</label
+    >
+    <input
+      type="password"
+      id="error_confirm_password"
+      formControlName="confirmPassword"
+      class="bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
+      placeholder="Not valid data"
+    />
+    <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+      <span class="font-medium"> Password </span>
+      {{ errors.get("password") }}
+    </p>
+    } @else {
+    <label
+      for="confirm_password"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >
+      Confirm password</label
+    >
+    <input
+      type="password"
+      id="confirm_password"
+      formControlName="confirmPassword"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="•••••••••"
+      required
+    />
+    }
+  </div>
+  @if (errors.has('termsAndConditions')) {
+  <div class="flex items-start mb-3">
+    <div class="flex items-center h-5">
+      <input
+        id="remember_error"
+        type="checkbox"
+        value=""
+        formControlName="termsAndConditions"
+        class="w-4 h-4 border border-red-500 rounded bg-red-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-red-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
+        required
+      />
+    </div>
+    <label
+      for="remember_error"
+      class="ms-2 text-sm font-medium text-red-500 dark:text-red-500"
+      >I agree with the
+      <a href="#" class="text-red-900 hover:underline dark:text-blue-500"
+        >terms and conditions</a
+      >.</label
+    >
+  </div>
+  <p class="text-sm mb-3 text-red-600 dark:text-red-500">
+    {{ errors.get("termsAndConditions") }}
+  </p>
+  } @else {
+  <div class="flex items-start mb-6">
+    <div class="flex items-center h-5">
+      <input
+        id="remember"
+        type="checkbox"
+        value=""
+        formControlName="termsAndConditions"
+        class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
+        required
+      />
+    </div>
+    <label
+      for="remember"
+      class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+      >I agree with the
+      <a href="#" class="text-blue-600 hover:underline dark:text-blue-500"
+        >terms and conditions</a
+      >.</label
+    >
+  </div>
+  }
+
+  <button
+    type="submit"
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+  >
+    Submit
+  </button>
+</form>
