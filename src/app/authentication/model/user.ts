@@ -1,8 +1,7 @@
-export type RegisterUser = {
+export type User = {
+    id: number,
     firstName: string,
     lastName: string,
     email: string,
     birthday: Date,
-    password: string,
-    confirmPassword: string,
 }

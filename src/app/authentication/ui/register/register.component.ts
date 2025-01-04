@@ -3,6 +3,7 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationService } from '../../data-access/authentication.service';
 import { RegisterUser } from '../../model/register-user';
 import { Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -13,11 +14,13 @@ import { Validators } from '@angular/forms';
 })
 export class RegisterComponent {
   authenticationService = inject(AuthenticationService);
+  router = inject(Router);
   
   registerForm = new FormGroup({
     firstName: new FormControl(''),
     lastName: new FormControl(''),
     email: new FormControl(''),
+    birthday: new FormControl(new Date()),
     password: new FormControl(''),
     confirmPassword: new FormControl(''),
     termsAndConditions: new FormControl(false),
@@ -27,6 +30,7 @@ export class RegisterComponent {
     firstName: '',
     lastName: '',
     email: '',
+    birthday: new Date(),
     password: '',
     confirmPassword: ''
   };
@@ -64,6 +68,14 @@ export class RegisterComponent {
       this.errors.delete('email');
     }
 
+    // birthday validation
+    if (this.registerForm.value.birthday == null) {
+      this.errors.set("birthday", "mustn't be empty");
+    }
+    else {
+      this.errors.delete("birthday");
+    }
+
     // password validation
     if (this.registerForm.value.password == '') {
       this.errors.set("password", "mustn't be empty");
@@ -82,7 +94,6 @@ export class RegisterComponent {
       this.errors.delete('termsAndConditions');
     }
 
-    console.log(this.errors.size);
     if (this.errors.size == 0) {
       this.register();
     }
@@ -93,9 +104,23 @@ export class RegisterComponent {
     this.newUser.firstName = this.registerForm.value.firstName ?? '';
     this.newUser.lastName = this.registerForm.value.lastName ?? '';
     this.newUser.email = this.registerForm.value.email ?? '';
+    this.newUser.birthday = this.registerForm.value.birthday ?? new Date();
     this.newUser.password = this.registerForm.value.password ?? '';
     this.newUser.confirmPassword = this.registerForm.value.confirmPassword ?? '';
-    this.authenticationService.add(this.newUser);
-    this.registerForm.reset();
+    
+    this.authenticationService.register(this.newUser).subscribe({
+      next: () => {
+        this.registerForm.reset();
+        this.router.navigate(['/registration-success']);
+      },
+      error: (error) => {
+        if (error.status === 409) {
+          if (error.error.errorCodes[0] === "User.DuplicateEmail") {
+            this.errors.set("email", error.error.detail)
+          }          
+        }
+        console.error("Błąd: ", error);
+      }
+    })
   }
 }
