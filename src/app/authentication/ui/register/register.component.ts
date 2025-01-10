@@ -3,12 +3,12 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationService } from '../../data-access/authentication.service';
 import { RegisterUser } from '../../model/register-user';
 import { Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
