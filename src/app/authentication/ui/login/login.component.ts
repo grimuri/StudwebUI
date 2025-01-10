@@ -2,13 +2,13 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationService } from '../../data-access/authentication.service';
 import { LoginUser } from '../../model/login-user';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { User } from '../../model/user';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -16,7 +16,12 @@ export class LoginComponent {
   authenticationService = inject(AuthenticationService);
   router = inject(Router);
 
-  constructor(public formBuilder: FormBuilder){}
+  constructor(public formBuilder: FormBuilder) {
+    const user = this.authenticationService.currentUserSig();
+    if (user) {
+      this.router.navigateByUrl("/note");
+    }
+  }
 
   loginForm = this.formBuilder.group({
     email: [''],
@@ -69,19 +74,20 @@ export class LoginComponent {
     this.authenticationService.login(this.loginUser).subscribe({
       next: (response) => {
         console.log("Odpowiedz: ", response);
-        localStorage.setItem('token', response.token);
 
         const user: User = {
           id: response.id,
           firstName: response.firstName,
           lastName: response.lastName,
           email: response.email,
-          birthday: response.birthday
-        };
-        localStorage.setItem('user', JSON.stringify(user));     
+          birthday: response.birthday,
+          token: response.token
+        };   
+        localStorage.setItem("user", JSON.stringify(user));
+        this.authenticationService.currentUserSig.set(user);
 
         this.loginForm.reset();
-        this.router.navigateByUrl('/');
+        this.router.navigate(['/note']);
       },
       error: (error) => {
         if (error.status === 409) {
