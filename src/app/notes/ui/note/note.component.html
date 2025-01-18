@@ -1,31 +1,177 @@
-<!-- src/app/features/notes/notes.component.html -->
 <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Lista Notatek</h1>
-  
-    <!-- Wyświetlanie komunikatu o błędzie -->
-    @if (errorMessage) {
-      <div class="text-red-500">{{ errorMessage }}</div>
-    }
-  
-    <!-- Wyświetlanie listy notatek lub informacji o ich braku -->
-    @if (this.notes.length > 0) {
-      <ul class="space-y-4">
-        @for (note of this.notes; track note.id) {
-          <li class="p-4 border rounded shadow-sm hover:shadow-md">
-            <h2 class="text-lg font-semibold">{{ note.title }}</h2>
-            <p class="text-gray-600">{{ note.content }}</p>
-            <small class="text-gray-400">
-              Utworzono: {{ note.createdOnUtc }}
-            </small>
-            <br />
-            <small class="text-gray-400">
-              Ostatnia modyfikacja: {{ note.lastModifiedOnUtc }}
-            </small>
-          </li>
-        }
-      </ul>
-    } @else {
-      <p class="text-gray-500">Brak notatek do wyświetlenia.</p>
+  <div class="text-center mb-6">
+    <h1 class="text-3xl font-extrabold text-black">Notes</h1>
+    <button
+      class="flex items-center px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:ring-2 focus:ring-green-400 transition ease-in-out mt-4"
+      (click)="openCreateModal()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5 mr-2"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 4v16m8-8H4"
+        />
+      </svg>
+      Create
+    </button>
+  </div>
+
+  @if (isCreateModalOpen) {
+  <div
+    class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50"
+  >
+    <div class="bg-white shadow-lg rounded-lg p-6 w-96 relative">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Create New Note</h2>
+      <form [formGroup]="noteForm" (submit)="saveNote()">
+        <div class="mb-4">
+          <label for="title" class="block text-sm font-medium text-gray-700"
+            >Title</label
+          >
+          <input
+            id="title"
+            type="text"
+            formControlName="title"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            placeholder="Enter title"
+          />
+          @if (formControls['title'].errors && formControls['title'].touched) {
+          <div class="text-red-600 text-sm mt-1">
+            @if (formControls['title'].errors['required']) {
+            <p>Title is required.</p>
+            } @else if (formControls['title'].errors['minlength']) {
+            <p>Title must be at least 3 characters.</p>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="mb-4">
+          <label for="content" class="block text-sm font-medium text-gray-700"
+            >Content</label
+          >
+          <textarea
+            id="content"
+            rows="4"
+            formControlName="content"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            placeholder="Enter content"
+          ></textarea>
+          @if (formControls['content'].errors &&
+          formControls['content'].touched) {
+          <div class="text-red-600 text-sm mt-1">
+            @if (formControls['content'].errors['required']) {
+            <p>Content is required.</p>
+            } @else if (formControls['content'].errors['minlength']) {
+            <p>Content must be at least 5 characters.</p>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700">Tags</label>
+          <app-tag (tagsChanged)="addTagsEvent($event)"></app-tag>
+        </div>
+        
+
+        <div class="flex justify-end space-x-4 mt-6">
+          <button
+            type="button"
+            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 focus:ring-2 focus:ring-gray-400 transition ease-in-out"
+            (click)="closeCreateModal()"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 transition ease-in-out"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+      <button
+        class="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+        (click)="closeCreateModal()"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+  } @if (isDeleteModalOpen) {
+    <div
+      class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50"
+    >
+      <div class="bg-white shadow-lg rounded-lg p-6 w-96 relative">
+        <h2 class="text-lg font-bold text-gray-800 mb-4">Confirm Deletion</h2>
+        <p class="text-gray-600 mb-6">
+          Are you sure you want to delete this note?
+        </p>
+        <div class="flex justify-end space-x-4">
+          <button
+            type="button"
+            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 focus:ring-2 focus:ring-gray-400 transition ease-in-out"
+            (click)="closeDeleteModal()"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 focus:ring-2 focus:ring-red-400 transition ease-in-out"
+            (click)="confirmDelete()"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+    } @defer {
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for (note of notes; track note.id) {
+    <div class="bg-white shadow-lg rounded-lg p-6 transition hover:bg-gray-100">
+      <h2 class="text-lg font-bold text-gray-800">{{ note.title }}</h2>
+      <p class="text-sm text-gray-600 mt-2">{{ note.content }}</p>
+      <p class="text-xs text-gray-500 mt-4">{{ note.createdOnUtc }}</p>
+      <div class="flex justify-end space-x-2 mt-4">
+        <button
+          class="flex items-center px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 transition ease-in-out"
+          (click)="editNote(note.id)"
+        >
+          Edit
+        </button>
+        <button
+          class="flex items-center px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:ring-2 focus:ring-red-400 transition ease-in-out"
+          (click)="openDeleteModal(note.id)"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
     }
   </div>
-  
+  } @loading {
+  <div class="text-center text-blue-500">Ładowanie notatek...</div>
+  } @placeholder {
+  <div class="text-center text-gray-500">Brak notatek do wyświetlenia.</div>
+  }
+</div>

@@ -1,0 +1,54 @@
+<div class="container mx-auto">
+  <form [formGroup]="tagForm" (submit)="addTag()">
+    <div class="mb-2">
+      <div class="flex items-start">
+        <input
+          id="name"
+          type="text"
+          formControlName="tag"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          placeholder="Enter tag name"
+          maxlength="20"
+        />
+        <button
+          type="button"
+          class="ml-2 px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:ring-2 focus:ring-green-400 transition ease-in-out"
+          (click)="addTag()"
+        >
+          Add
+        </button>
+      </div>
+      @if (formControls['tag'].errors){
+        <div class="text-red-600 text-sm mt-1">
+          @if (formControls['tag'].errors['maxlength']) {
+          <p>Name must be at most 20 characters.</p>
+          }
+        </div>
+        }
+    </div>
+
+    <div class="mb-4">
+      <div class="overflow-y-auto max-h-32">
+        <ul class="list-none flex flex-wrap gap-2">
+          @for (tag of tags; track tag) {
+            <li
+              class="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg flex items-center max-w-xs overflow-hidden"
+            >
+              {{ tag }}
+              <button
+                type="button"
+                class="ml-2 text-red-500 hover:text-red-700"
+                (click)="removeTag(tag)"
+              >
+                &times;
+              </button>
+            </li>
+          } @empty {
+            <li class="text-gray-500 italic">There are no tags.</li>
+          }
+        </ul>
+      </div>
+    </div>
+    
+  </form>
+</div>

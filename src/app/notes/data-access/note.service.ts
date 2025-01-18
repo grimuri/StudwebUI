@@ -5,6 +5,7 @@ import { Note } from '../model/note';
 import { AuthenticationService } from '../../authentication/data-access/authentication.service';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { AddNote } from '../model/add-note';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +26,26 @@ export class NoteService {
     });
     
     return this.httpClient.get<{ notes: Note[] }>(this.url, { headers });
+  }
+
+  addNote(note: AddNote): Observable<Note> {
+    const token = this.authService.getCurrentUser()?.token;
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json', // Wymagane dla wysyłania JSON
+    });
+
+    return this.httpClient.post<Note>(this.url, note, { headers });
+  }
+
+  deleteNote(id: number): Observable<number> {
+    const token = this.authService.getCurrentUser()?.token;
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.httpClient.delete<number>(`${this.url}/${id}`, { headers });
   }
 }
