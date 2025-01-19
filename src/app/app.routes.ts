@@ -3,7 +3,7 @@ import { RegisterComponent } from './authentication/ui/register/register.compone
 import { RegistrationSuccessComponent } from './authentication/ui/registration-success/registration-success.component';
 import { LoginComponent } from './authentication/ui/login/login.component';
 import { AppComponent } from './app.component';
-import { NoteComponent } from './notes/ui/note/note.component';
+import { ListOfNotesComponent } from './notes/ui/list-of-notes/list-of-notes.component';
 import { AuthGuard } from './authentication/guards/auth.guard';
 import { StartComponent } from './ui/start/start.component';
 import { MenuComponent } from './ui/menu/menu.component';
@@ -32,7 +32,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'note',
-        component: NoteComponent,
+        component: ListOfNotesComponent,
         canActivate: [AuthGuard],
       },
     ],
