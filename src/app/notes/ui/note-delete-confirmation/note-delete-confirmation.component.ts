@@ -8,14 +8,14 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './note-delete-confirmation.component.css'
 })
 export class NoteDeleteConfirmationComponent {
-  @Output() confirm = new EventEmitter<void>(); // Emituje zdarzenie potwierdzenia
-  @Output() cancel = new EventEmitter<void>(); // Emituje zdarzenie anulowania
+  @Output() confirm = new EventEmitter<void>();
+  @Output() cancel = new EventEmitter<void>();
 
   onConfirm(): void {
-    this.confirm.emit(); // Emituje zdarzenie potwierdzenia
+    this.confirm.emit();
   }
 
   onCancel(): void {
-    this.cancel.emit(); // Emituje zdarzenie anulowania
+    this.cancel.emit();
   }
 }
