@@ -1,22 +1,23 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NoteService } from '../../data-access/note.service';
 import { Note } from '../../model/note';
-import { TagComponent } from "../tags/tag.component";
-import { AddNote } from '../../model/add-note';
+import { TagComponent } from "../tags/tag.component";;
 import { NoteComponent } from '../note/note.component';
 import { NoteDeleteConfirmationComponent } from "../note-delete-confirmation/note-delete-confirmation.component";
 import { NoteAddFormComponent } from "../note-add-form/note-add-form.component";
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-of-notes',
   standalone: true,
-  imports: [ReactiveFormsModule, TagComponent, NoteComponent, NoteDeleteConfirmationComponent, NoteAddFormComponent],
+  imports: [ReactiveFormsModule, NoteComponent, NoteDeleteConfirmationComponent, NoteAddFormComponent],
   templateUrl: './list-of-notes.component.html',
   styleUrls: ['./list-of-notes.component.css'],
 })
 export class ListOfNotesComponent implements OnInit {
+  private router = inject(Router);
   private toastr = inject(ToastrService);
   private noteService = inject(NoteService);
 
@@ -49,13 +50,15 @@ export class ListOfNotesComponent implements OnInit {
       },
     });
   }
+  
+  // Edit note
 
   editNoteHandler(id: number): void {
-    console.log(`Editing note with ID: ${id}`);
-    // Implement edit logic or routing to edit page
+    this.router.navigate([`/note/${id}/edit`]);
   }
 
   // Add note
+
   openCreateModal(): void {
     this.isCreateModalOpen = true;
   }
@@ -94,12 +97,11 @@ export class ListOfNotesComponent implements OnInit {
   deleteNote(id: number): void {
     this.noteService.deleteNote(id).subscribe({
       next: () => {
-        console.log(`Note with ID ${id} deleted successfully`);
         this.notes = this.notes.filter((note) => note.id !== id);
         this.toastr.success('Note deleted successfully', 'Success')
       },
-      error: (err) => {
-        console.error('Error deleting note:', err);
+      error: () => {
+        this.toastr.error('Error deleting note', 'Error');
       },
     });
   }

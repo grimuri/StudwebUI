@@ -1,4 +1,5 @@
-<div class="bg-white shadow-lg rounded-lg p-6 transition hover:bg-gray-100">
+<div class="bg-white shadow-lg rounded-lg p-6 transition hover:bg-gray-100 cursor-pointer" [routerLink]="['/note', note.id]"
+>
     <h2 class="text-lg font-bold text-gray-800">{{ note.title }}</h2>
     <p
       class="line-clamp-3 text-sm leading-relaxed text-transparent bg-clip-text bg-gradient-to-b from-gray-600 via-gray-400 to-gray-200"
@@ -8,13 +9,13 @@
     <p class="text-xs text-gray-500 mt-4">{{ note.createdOnUtc }}</p>
     <div class="flex justify-end space-x-2 mt-4">
       <button
-        class="flex items-center px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 transition ease-in-out"
+        class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:scale-105 hover:shadow-lg transition-transform"
         (click)="onEdit()"
       >
         Edit
       </button>
       <button
-        class="flex items-center px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:ring-2 focus:ring-red-400 transition ease-in-out"
+        class="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-lg shadow-md hover:scale-105 hover:shadow-lg transition-transform"
         (click)="onDelete()"
       >
         Delete

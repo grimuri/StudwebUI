@@ -6,6 +6,8 @@ import { AuthenticationService } from '../../authentication/data-access/authenti
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { AddNote } from '../model/add-note';
+import { DetailsOfNote } from '../model/details-of-note';
+import { EditNote } from '../model/edit-note';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +30,16 @@ export class NoteService {
     return this.httpClient.get<{ notes: Note[] }>(this.url, { headers });
   }
 
+  getNoteById(id: number): Observable<DetailsOfNote> {
+    const token = this.authService.getCurrentUser()?.token;
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+  
+    return this.httpClient.get<DetailsOfNote>(`${this.url}/${id}`, { headers });
+  }
+
   addNote(note: AddNote): Observable<Note> {
     const token = this.authService.getCurrentUser()?.token;
 
@@ -37,6 +49,17 @@ export class NoteService {
     });
 
     return this.httpClient.post<Note>(this.url, note, { headers });
+  }
+
+  updateNote(id: number, note: EditNote): Observable<void> {
+    const token = this.authService.getCurrentUser()?.token;
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+  
+    return this.httpClient.put<void>(`${this.url}/${id}`, note, { headers });
   }
 
   deleteNote(id: number): Observable<number> {

@@ -2,7 +2,7 @@
   <div class="text-center mb-6">
     <h1 class="text-3xl font-extrabold text-black">Notes</h1>
     <button
-      class="flex items-center px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:ring-2 focus:ring-green-400 transition ease-in-out mt-4"
+      class="flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 hover:scale-105 hover:shadow-lg transition-transform"
       (click)="openCreateModal()"
     >
       <svg
@@ -44,7 +44,20 @@
     }
   </div>
   } @loading {
-  <div class="text-center text-blue-500">Ładowanie notatek...</div>
+  <div
+    class="flex flex-col items-center justify-center text-center text-blue-500"
+  >
+    <!-- Obrazek GIF -->
+    <img
+      src="assets/loading.gif"
+      alt="Loading"
+      class="w-16 h-16 mb-4"
+    />
+
+    <!-- Tekst informacyjny -->
+    <p class="text-lg font-medium">Ładowanie notatek...</p>
+  </div>
+
   } @placeholder {
   <div class="text-center text-gray-500">Brak notatek do wyświetlenia.</div>
   }

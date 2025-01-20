@@ -47,19 +47,18 @@ export class NoteAddFormComponent {
   saveNote(): void {
     if (this.noteForm.valid) {
       this.addNote = {
-        ...this.noteForm.value, // Pobierz wartości z formularza
-        tags: this.tags, // Dodaj tagi
+        ...this.noteForm.value,
+        tags: this.tags,
       };
-
-      // Wywołanie serwisu NoteService, aby zapisać notatkę
+      
       this.noteService.addNote(this.addNote).subscribe({
         next: (note) => {
-          this.noteAdded.emit(note); // Emituj zdarzenie z dodaną notatką
-          this.noteForm.reset(); // Zresetuj formularz
-          this.tags = []; // Wyczyszczenie tagów
+          this.noteAdded.emit(note);
+          this.noteForm.reset();
+          this.tags = [];
           this.toastr.success('Note added successfully', 'Success');
         },
-        error: (err) => {
+        error: () => {
           this.toastr.error('An error occurred while adding the note', 'Error');
         },
       });

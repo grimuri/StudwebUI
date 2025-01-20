@@ -1,4 +1,4 @@
-import { Component, inject, input, Output, EventEmitter } from '@angular/core';
+import { Component, inject, Input, Output, EventEmitter } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -15,9 +15,11 @@ import {
 })
 export class TagComponent {
   @Output() tagsChanged = new EventEmitter<string[]>();
+  @Input() tags: string[] = [];
+
   fb = inject(FormBuilder);
   tagForm: FormGroup;
-  tags: string[] = [];
+  
 
   constructor() {
     this.tagForm = this.fb.group({
@@ -25,31 +27,30 @@ export class TagComponent {
         '',
         [
           Validators.minLength(1),
-          Validators.maxLength(20), // Ograniczenie długości tagu do 20 znaków
+          Validators.maxLength(20),
         ],
       ],
     });
   }
 
   addTag(): void {
-    const tagName = this.tagForm.get('tag')?.value?.trim(); // Pobierz wartość z formularza
+    const tagName = this.tagForm.get('tag')?.value?.trim();
     if (tagName) {
       if (!this.tags.includes(tagName)) {
-        // Sprawdź, czy tag nie istnieje na liście
-        this.tags.push(tagName); // Dodaj nowy tag do listy
-        this.emitTags(); // Emituj zaktualizowaną listę tagów
+        this.tags.push(tagName);
+        this.emitTags();
       }
-      this.tagForm.patchValue({ tag: '' }); // Wyczyść pole formularza
+      this.tagForm.patchValue({ tag: '' });
     }
   }
 
   removeTag(tag: string): void {
-    this.tags = this.tags.filter((t) => t !== tag); // Usuń tag z listy `tags`
-    this.emitTags(); // Emituj zaktualizowaną listę tagów
+    this.tags = this.tags.filter((t) => t !== tag);
+    this.emitTags();
   }
 
   emitTags(): void {
-    this.tagsChanged.emit(this.tags); // Emituj zaktualizowaną listę tagów
+    this.tagsChanged.emit(this.tags);
   }
 
   get formControls() {
